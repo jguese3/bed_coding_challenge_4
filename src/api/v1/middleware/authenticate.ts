@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { auth } from "../config/firebaseConfig";
-import { HTTP_STATUS } from "../constants/httpConstants";
+import { auth } from "../../../config/firebaseConfig";
+import { HTTP_STATUS } from "../../../constants/httpConstants";
 
-export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -21,3 +21,5 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     res.status(HTTP_STATUS.UNAUTHORIZED).json({ error: "Authentication failed" });
   }
 };
+
+export default authenticate;

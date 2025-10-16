@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { HTTP_STATUS } from "../../../constants/httpConstants";
+import { UserRecord } from "firebase-admin/auth";
+
+import { auth } from "../../../config/firebaseConfig";
 
 /**
  * Controller to get the user profile.
@@ -59,6 +62,21 @@ export const deleteUser = (
             deletedBy: res.locals.uid,
         });
     } catch (error) {
+        next(error);
+    }
+};
+
+export const getUserDetails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> => {
+    try {
+        const { id } = req.params;
+
+        const userRecord: UserRecord = await auth.getUser(id);
+        res.status(HTTP_STATUS.OK).json(userRecord);
+    } catch (error: unknown) {
         next(error);
     }
 };
